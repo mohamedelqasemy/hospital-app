@@ -1,0 +1,96 @@
+
+services:
+
+  configService:
+    container_name: configService
+    build: ./server-side/services/config-service
+    ports:
+      - "8888:8888"
+    volumes:
+      - hospital-system:/data
+    networks:
+      - hospital-net
+
+  discoveryService:
+    container_name: discoveryService
+    build: ./server-side/services/discovery-service
+    ports:
+      - "9999:9999" 
+    networks:
+      - hospital-net
+
+  userService:
+    container_name: userService
+    build: ./server-side/services/user-service
+    ports:
+      - "8060:8060" 
+    volumes:
+      - hospital-system:/data 
+    networks:
+      - hospital-net
+
+  pharmacyService:
+    container_name: pharmacyService
+    build: ./server-side/services/pharmacy-service
+    ports:
+      - "8070:8070"
+    volumes:
+      - hospital-system:/data
+    networks:
+      - hospital-net
+
+  appointmentService:
+    container_name: appointmentService
+    build: ./server-side/services/appointment-service
+    ports:
+      - "8050:8050"
+    volumes:
+      - hospital-system:/data
+    networks:
+      - hospital-net
+  
+  invoiceService:
+    container_name: invoiceService
+    build: ./server-side/services/invoice-service
+    ports:
+      - "8040:8040"
+    volumes:
+      - hospital-system:/data
+    networks:
+      - hospital-net
+
+  gatewayService:
+    container_name: gatewayService
+    build: ./server-side/services/gateway-service
+    ports:
+      - "7777:7777"
+    volumes:
+      - hospital-system:/data
+    networks:
+      - hospital-net
+
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-container
+    environment:
+      POSTGRES_DB: hospitaldb
+      POSTGRES_USER: hospitaldb
+      POSTGRES_PASSWORD: hospitaldb
+    volumes:
+      - hospital-system:/var/lib/postgresql/data
+    networks:
+      - hospital-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U hospitaldb" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+volumes:
+  hospital-system:
+
+networks:
+  hospital-net:
+    driver: bridge
