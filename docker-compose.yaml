@@ -6,6 +6,11 @@ services:
     build: ./server-side/services/config-service
     ports:
       - "8888:8888"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      retries: 3
+      timeout: 10s
+      interval: 30s
     volumes:
       - hospital-system:/data
     networks:
@@ -15,7 +20,12 @@ services:
     container_name: discoveryService
     build: ./server-side/services/discovery-service
     ports:
-      - "9999:9999" 
+      - "9999:9999"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9999/actuator/health" ]
+      retries: 3
+      timeout: 10s
+      interval: 30s
     networks:
       - hospital-net
 
@@ -23,7 +33,12 @@ services:
     container_name: userService
     build: ./server-side/services/user-service
     ports:
-      - "8060:8060" 
+      - "8060:8060"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8060/actuator/health" ]
+      retries: 3
+      timeout: 10s
+      interval: 30s
     volumes:
       - hospital-system:/data 
     networks:
@@ -34,6 +49,11 @@ services:
     build: ./server-side/services/pharmacy-service
     ports:
       - "8070:8070"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8070/actuator/health" ]
+      retries: 3
+      timeout: 10s
+      interval: 30s
     volumes:
       - hospital-system:/data
     networks:
@@ -44,6 +64,11 @@ services:
     build: ./server-side/services/appointment-service
     ports:
       - "8050:8050"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8050/actuator/health" ]
+      retries: 3
+      timeout: 10s
+      interval: 30s
     volumes:
       - hospital-system:/data
     networks:
@@ -54,6 +79,11 @@ services:
     build: ./server-side/services/invoice-service
     ports:
       - "8040:8040"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8040/actuator/health" ]
+      retries: 3
+      timeout: 10s
+      interval: 30s
     volumes:
       - hospital-system:/data
     networks:
@@ -64,6 +94,11 @@ services:
     build: ./server-side/services/gateway-service
     ports:
       - "7777:7777"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:7777/actuator/health" ]
+      retries: 3
+      timeout: 10s
+      interval: 30s
     volumes:
       - hospital-system:/data
     networks:
